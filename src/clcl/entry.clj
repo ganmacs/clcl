@@ -1,7 +1,10 @@
 (ns clcl.entry
   (:require [clcl.util :as util]))
 
-(def entries (atom {}))
+(defonce entries (atom {}))
+
+(defn reset-entries! []
+  (reset! entries {}))
 
 (defn- select-entries-by [event]
   (get @entries event))

@@ -2,10 +2,10 @@
 
 (def push :push)
 (def issues :issues)
-(def pull-request :pull_request)
-(def commit-comment :commit_comment)
-(def issue-comment :commit_comment)
-(def pull-request-review-comment :pull_request_review_comment)
+(def pull-request :pull-request)
+(def commit-comment :commit-comment)
+(def issue-comment :commit-comment)
+(def pull-request-review-comment :pull-request-review-comment)
 
 (defn parse [event]
   (case event

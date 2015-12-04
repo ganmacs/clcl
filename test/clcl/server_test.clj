@@ -1,7 +1,7 @@
-(ns clcl.handler-test
+(ns clcl.server-test
   (:require [clojure.test :refer :all]
             [ring.mock.request :as mock]
-            [clcl.handler :refer :all]))
+            [clcl.server :refer :all]))
 
 (deftest test-app
   (testing "main route"

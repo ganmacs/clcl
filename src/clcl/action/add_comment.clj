@@ -2,7 +2,7 @@
   (:require
    [clcl.entry :as entry]
    [clcl.event :as event]
-   [clcl.payload-util :as putil]
+   [clcl.util.payload :as putil]
    [tentacles.issues :as ti]))
 
 (defn- issue-id [event]

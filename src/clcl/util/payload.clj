@@ -1,4 +1,4 @@
-(ns clcl.payload-util
+(ns clcl.util.payload
   (:require [clojure.string :as str]))
 
 (defn full-name [payload]
