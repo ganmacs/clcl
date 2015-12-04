@@ -1,6 +1,8 @@
 (ns clcl.util.namespace
   (:require [bultitude.core :as b]))
 
-(defn require-namespaces []
-  (doseq [n (b/namespaces-on-classpath :prefix "clcl.action")]
-    (require n :reload)))
+(defn namespaces-by-prefix [prefix]
+  (b/namespaces-on-classpath :prefix prefix))
+
+(defn fetch-symbols [name namesapces]
+  (map #(ns-resolve % (symbol name)) namesapces))

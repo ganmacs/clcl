@@ -13,5 +13,3 @@
                      (putil/repository event)
                      (issue-id event)
                      body config))
-
-(entry/register-handler event/issue-comment (partial add-comment ":santa:"))

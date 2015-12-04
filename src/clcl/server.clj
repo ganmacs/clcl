@@ -1,23 +1,19 @@
 (ns clcl.server
   (:require [clcl.event :as event]
-            [clojure.pprint :refer :all]
+            [clojure.pprint :refer :all] ; for dev
             [clcl.entry :as entry]
             [compojure.route :as route]
             [compojure.core :refer [defroutes POST]]
             [compojure.handler :as handler]
             [clcl.util.namespace :as ns]
-            [ring.adapter.jetty :as j]
+            [ring.adapter.jetty :as server]
             [ring.middleware.defaults :as d]
             [ring.middleware.json :as middleware])
   (:gen-class))
 
-(defn- github-event [headers]
-  (get headers "x-github-event"))
-
 (defn- root-handler [{:keys [body headers] :as request}]
-  (let [e (github-event headers)]
+  (let [e (get headers "x-github-event")]
     (when-let [event-name (event/parse e)]
-      (println ";alsjdkfaksdjfakdfj")
       (entry/invoke event-name body))
     "ok"))
 
@@ -35,9 +31,8 @@
 
 (defn start-server []
   (when-not @server
-    (entry/reset-entries!)
-    (ns/require-namespaces)
-    (reset! server (j/run-jetty #'app {:port 3000 :join? false}))))
+    (entry/load-entries!)
+    (reset! server  (server/run-jetty #'app {:port 3000 :join? false}))))
 
 (defn stop-server []
   (when @server
