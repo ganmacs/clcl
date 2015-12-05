@@ -1,6 +1,7 @@
 (ns clcl.entry
   (:require [clcl.util :as util]
-            [clcl.util.namespace :as ns]))
+            [clcl.util.namespace :as ns]
+            [clojure.tools.logging :as log]))
 
 (def ns-prefix "clcl.handler")
 
@@ -15,7 +16,6 @@
         es (map (fn [ns] {:event (ns/resolve-var "event-name" ns)
                           :body  (ns/resolve-var "run" ns)})
                 nss)]
-    (println (:event es))
     (reset! entries es)))
 
 (defn- filter-entries-by [event-name]
@@ -23,6 +23,9 @@
    (fn [{:keys [event]}] (= (deref event) event-name))
    @entries))
 
-(defn invoke [event payload]
-  (doseq [e (map :body (filter-entries-by event))]
-    (e payload (util/with-oauth {}))))
+(defn invoke [entry payload]
+  (doseq [event (filter-entries-by entry)]
+    (let [b (:body event)
+          e (:event event)]
+      (log/info (format "Executed %s by %s event" b e))
+      (b payload (util/with-oauth {})))))
