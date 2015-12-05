@@ -11,10 +11,11 @@
 
 (defn load-entries! []
   (reset-entries!)
-  (let [nss (ns/namespaces-by-prefix ns-prefix)
-        es (map (fn [e r] {:event e :body r})
-                (ns/fetch-symbols "event-name" nss)
-                (ns/fetch-symbols "run" nss))]
+  (let [nss (ns/find-namespaces ns-prefix)
+        es (map (fn [ns] {:event (ns/resolve-var "event-name" ns)
+                          :body  (ns/resolve-var "run" ns)})
+                nss)]
+    (println (:event es))
     (reset! entries es)))
 
 (defn- filter-entries-by [event-name]

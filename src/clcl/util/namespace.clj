@@ -1,8 +1,10 @@
 (ns clcl.util.namespace
-  (:require [bultitude.core :as b]))
+  (:require [bultitude.core :as b]
+            [clcl.util.namespace :as ns]))
 
-(defn namespaces-by-prefix [prefix]
+(defn find-namespaces [prefix]
   (b/namespaces-on-classpath :prefix prefix))
 
-(defn fetch-symbols [name namesapces]
-  (map #(ns-resolve % (symbol name)) namesapces))
+(defn resolve-var [name ns]
+  (require ns)
+  (ns-resolve ns (symbol name)))

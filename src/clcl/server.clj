@@ -1,15 +1,14 @@
 (ns clcl.server
-  (:require [clcl.event :as event]
-            [clojure.pprint :refer :all] ; for dev
+  (:gen-class)
+  (:require [clojure.pprint :refer :all] ; for dev
+            [clcl.event :as event]
             [clcl.entry :as entry]
             [compojure.route :as route]
             [compojure.core :refer [defroutes POST]]
             [compojure.handler :as handler]
-            [clcl.util.namespace :as ns]
             [ring.adapter.jetty :as server]
             [ring.middleware.defaults :as d]
-            [ring.middleware.json :as middleware])
-  (:gen-class))
+            [ring.middleware.json :as middleware]))
 
 (defn- root-handler [{:keys [body headers] :as request}]
   (let [e (get headers "x-github-event")]
