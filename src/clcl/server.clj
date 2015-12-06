@@ -1,6 +1,7 @@
 (ns clcl.server
   (:gen-class)
   (:require [clojure.pprint :refer :all] ; for dev
+            [clojure.tools.logging :as log]
             [clcl.event :as event]
             [clcl.entry :as entry]
             [compojure.route :as route]
@@ -16,11 +17,15 @@
       (entry/invoke event-name body))
     "ok"))
 
+(defn- not-found [{:keys [uri] :as request}]
+  (log/info (format "%s is not found" uri))
+  "Not Found")
+
 (defonce server (atom nil))
 
 (defroutes app-routes
   (POST "/" _ root-handler)
-  (route/not-found "Not Found"))
+  (route/not-found not-found))
 
 (def app
   (-> app-routes
